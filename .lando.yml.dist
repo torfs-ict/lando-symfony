@@ -37,6 +37,8 @@ services:
       server: .lando/install/nginx.conf
       conf: .lando/install/php.ini
     xdebug: true
+    composer:
+      hirak/prestissimo: "^0.3"
   database:
     portforward: 3306
   phpmyadmin:
