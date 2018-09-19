@@ -19,6 +19,9 @@ services:
     install_dependencies_as_root:
       # Install and configure Blackfire
       - "bash $LANDO_MOUNT/.lando/install/blackfire.sh"
+      - echo "blackfire.log_file=$LANDO_MOUNT/var/logs/blackfire.log" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
+      - echo "blackfire.log_level=2" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
+      - echo "blackfire.agent_socket=tcp://blackfire:8707" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
       # Install tooling
       - "cp $LANDO_MOUNT/.lando/tooling/blackfire.sh /usr/bin/tooling-blackfire && chmod +x /usr/bin/tooling-blackfire"
       - "cp $LANDO_MOUNT/.lando/tooling/symfony.sh /usr/bin/tooling-symfony && chmod +x /usr/bin/tooling-symfony"
@@ -39,6 +42,11 @@ services:
     xdebug: true
     composer:
       hirak/prestissimo: "^0.3"
+  blackfire:
+      type: compose
+      services:
+        image: blackfire/blackfire
+        command: blackfire-agent
   database:
     portforward: 3306
   phpmyadmin:
