@@ -25,7 +25,7 @@ services:
       # Install igbinary extension
       - "pecl install igbinary"
       - "docker-php-ext-enable igbinary"
-      install_dependencies_as_me:
+    install_dependencies_as_me:
       - "composer install --working-dir=$LANDO_MOUNT"
     config:
       server: .lando/install/nginx.conf
@@ -42,7 +42,7 @@ services:
       - "cp $LANDO_MOUNT/.lando/tooling/encore.sh /usr/bin/tooling-encore && chmod +x /usr/bin/tooling-encore"
       # Upgrade Yarn
       - "curl -o- -L https://yarnpkg.com/install.sh | bash"
-      install_dependencies_as_me:
+    install_dependencies_as_me:
       - "yarn --cwd=$LANDO_MOUNT"
   mailhog:
     type: mailhog
