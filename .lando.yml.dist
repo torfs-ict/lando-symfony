@@ -35,6 +35,7 @@ services:
       - "composer install --working-dir=$LANDO_MOUNT"
     config:
       server: .lando/install/nginx.conf
+      conf: .lando/install/php.ini
   database:
     portforward: 3306
   phpmyadmin:
