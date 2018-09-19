@@ -1,0 +1,89 @@
+name: siefspace
+recipe: lemp
+
+config:
+  webroot: public
+  database: mysql
+
+proxy:
+  nginx:
+    - "*.dev.local.torfs.org"
+  mailhog:
+    - "*.mhg.local.torfs.org"
+  phpmyadmin:
+    - "*.pma.local.torfs.org"
+
+services:
+  appserver:
+    ssl: true
+    install_dependencies_as_root:
+      # Install and configure Blackfire
+      - "bash $LANDO_MOUNT/.lando/install/blackfire.sh"
+      # Install tooling
+      - "cp $LANDO_MOUNT/.lando/tooling/blackfire.sh /usr/bin/tooling-blackfire && chmod +x /usr/bin/tooling-blackfire"
+      - "cp $LANDO_MOUNT/.lando/tooling/symfony.sh /usr/bin/tooling-symfony && chmod +x /usr/bin/tooling-symfony"
+      # Install igbinary extension
+      - "pecl install igbinary"
+      - "docker-php-ext-enable igbinary"
+      install_dependencies_as_me:
+      - "composer install --working-dir=$LANDO_MOUNT"
+    config:
+      server: .lando/install/nginx.conf
+  database:
+    portforward: 3306
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
+  node:
+    type: node
+    install_dependencies_as_root:
+      # Install tooling
+      - "cp $LANDO_MOUNT/.lando/tooling/encore.sh /usr/bin/tooling-encore && chmod +x /usr/bin/tooling-encore"
+      # Upgrade Yarn
+      - "curl -o- -L https://yarnpkg.com/install.sh | bash"
+      install_dependencies_as_me:
+      - "yarn --cwd=$LANDO_MOUNT"
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+  memcached:
+    type: memcached
+    mem: 256
+  chrome-headless:
+    type: compose
+    services:
+      image: justinribeiro/chrome-headless
+      command: google-chrome --headless --disable-gpu --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox
+  unoconv:
+    type: compose
+    services:
+      image: zrrrzzt/docker-unoconv-webservice
+      command: /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 & node standalone.js
+
+tooling:
+  sf:
+    service: appserver
+    description: Run Symfony console commands
+    cmd:
+      - tooling-symfony
+  yarn:
+    service: node
+    description: Run the Yarn package manager
+    run:
+      - yarn --force
+    cmd:
+      - yarn
+
+  blackfire:
+    service: appserver
+    description: Profile a Symfony console command using blackfire
+    cmd:
+      - tooling-blackfire
+
+  encore:
+    service: node
+    description: Runs Webpack Encore
+    cmd:
+      - tooling-encore
