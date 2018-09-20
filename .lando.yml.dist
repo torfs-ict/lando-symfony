@@ -15,7 +15,7 @@ proxy:
 
 services:
   appserver:
-    type: php:7.2
+    type: php:7.1
     via: nginx
     ssl: true
     install_dependencies_as_root:
