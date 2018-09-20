@@ -22,9 +22,6 @@ services:
       - echo "blackfire.log_file=$LANDO_MOUNT/var/logs/blackfire.log" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
       - echo "blackfire.log_level=2" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
       - echo "blackfire.agent_socket=tcp://blackfire:8707" >> /usr/local/etc/php/conf.d/zz-blackfire.ini
-      # Install tooling
-      - "cp $LANDO_MOUNT/.lando/tooling/blackfire.sh /usr/bin/tooling-blackfire && chmod +x /usr/bin/tooling-blackfire"
-      - "cp $LANDO_MOUNT/.lando/tooling/symfony.sh /usr/bin/tooling-symfony && chmod +x /usr/bin/tooling-symfony"
       # Install igbinary extension
       - "pecl install igbinary"
       - "docker-php-ext-enable igbinary"
@@ -56,8 +53,6 @@ services:
   node:
     type: node
     install_dependencies_as_root:
-      # Install tooling
-      - "cp $LANDO_MOUNT/.lando/tooling/encore.sh /usr/bin/tooling-encore && chmod +x /usr/bin/tooling-encore"
       # Upgrade Yarn
       - "curl -o- -L https://yarnpkg.com/install.sh | bash"
     install_dependencies_as_me:
@@ -84,24 +79,18 @@ tooling:
   sf:
     service: appserver
     description: Run Symfony console commands
-    cmd:
-      - tooling-symfony
+    cmd: php bin/console
   yarn:
     service: node
     description: Run the Yarn package manager
-    run:
-      - yarn --force
-    cmd:
-      - yarn
+    cmd: yarn
 
   blackfire:
     service: appserver
     description: Profile a Symfony console command using blackfire
-    cmd:
-      - tooling-blackfire
+    cmd: blackfire run php bin/console
 
   encore:
     service: node
     description: Runs Webpack Encore
-    cmd:
-      - tooling-encore
+    cmd: node_modules/.bin/encore
