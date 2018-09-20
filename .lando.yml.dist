@@ -59,10 +59,15 @@ services:
     services:
       image: sebp/elk
       command: /usr/local/bin/start.sh
+      volumes:
+        - data_elasticsearch:/var/lib/elasticsearch
       ports:
         - '5601:5601'
       environment:
         - ES_CONNECT_RETRY=120
+    overrides:
+      volumes:
+        data_elasticsearch: {}
   node:
     type: node
     install_dependencies_as_root:
