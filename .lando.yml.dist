@@ -11,6 +11,8 @@ proxy:
     - "*.mhg.local.torfs.org"
   phpmyadmin:
     - "*.pma.local.torfs.org"
+  elk:
+    - '*.elk.local.torfs.org:5601'
 
 services:
   appserver:
@@ -51,6 +53,16 @@ services:
     type: phpmyadmin
     hosts:
       - database
+  elk:
+    type: compose
+    portforward: 5601
+    services:
+      image: sebp/elk
+      command: /usr/local/bin/start.sh
+      ports:
+        - '5601:5601'
+      environment:
+        - ES_CONNECT_RETRY=120
   node:
     type: node
     install_dependencies_as_root:
