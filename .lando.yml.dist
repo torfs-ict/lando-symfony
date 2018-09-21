@@ -82,7 +82,12 @@ services:
     type: compose
     services:
       image: zrrrzzt/docker-unoconv-webservice
-      command: /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 & node standalone.js
+      volumes:
+        - 'data_unoconv:/unoconvservice/uploads'
+      command: 'bash /app/.lando/install/unoconv.sh'
+    overrides:
+      volumes:
+        data_unoconv: {  }
 
 tooling:
   sf:
