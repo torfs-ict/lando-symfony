@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  chrome-headless:
+    image: justinribeiro/chrome-headless
+    command: ["--headless", "--disable-gpu", "--remote-debugging-address=0.0.0.0", "--remote-debugging-port=9222", "--no-sandbox"]
+    restart: always
+    ports:
+    - '127.0.0.1:9222:9222'
+
+  unoconv:
+    image: zrrrzzt/docker-unoconv-webservice
+    restart: always
+    ports:
+    - '127.0.0.1:3000:3000'
