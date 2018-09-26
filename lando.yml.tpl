@@ -5,14 +5,10 @@ config:
   database: mysql
 
 proxy:
-  nginx:
-    - "*.dev.local.torfs.org"
-  mailhog:
-    - "*.mhg.local.torfs.org"
-  phpmyadmin:
-    - "*.pma.local.torfs.org"
-  elk:
-    - '*.elk.local.torfs.org:5601'
+  - nginx
+  - mailhog
+  - phpmyadmin
+  - elk
 
 services:
   appserver:

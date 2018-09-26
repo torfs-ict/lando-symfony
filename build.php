@@ -46,6 +46,20 @@ $app
         } else {
             $dist = Yaml::parseFile($dist);
             $user = Yaml::parseFile($user);
+
+            // Validation: at least one proxy URL should be set for each service
+            if (!array_key_exists('proxy', $user) || !is_array($user['proxy'])) {
+                $block('No <bg=red;options=bold>proxy domains</> set in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
+                exit(3);
+            }
+            foreach($dist['proxy'] as $service) {
+                if (!array_key_exists($service, $user['proxy']) || !is_array($user['proxy'][$service])) {
+                    $block('No <bg=red;options=bold>proxy domain(s)</> set for service <bg=red;options=bold>' . $service . '</> in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
+                    exit(4);
+                }
+            }
+            unset($dist['proxy']);
+
             file_put_contents($build, Yaml::dump(array_merge_recursive($dist, $user), 10, 2));
             $block(
                 '[OK] Successfully created your environment in <bg=green;options=bold>.lando.yml</>.',
