@@ -1,0 +1,17 @@
+name: my-project
+
+proxy:
+  nginx:
+    - "my-project.dev.local.torfs.org"
+  mailhog:
+    - "my-project.mhg.local.torfs.org"
+  phpmyadmin:
+    - "my-project.pma.local.torfs.org"
+  elk:
+    - 'my-project.elk.local.torfs.org:5601'
+
+tooling:
+  worker:
+    service: appserver
+    description: Runs the background worker broker
+    cmd: php bin/console app:worker --no-debug -vvv
