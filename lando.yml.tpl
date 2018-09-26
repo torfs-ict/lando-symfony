@@ -90,16 +90,26 @@ tooling:
     service: appserver
     description: Run Symfony console commands
     cmd: php bin/console
+  diff:
+    service: appserver
+    description: Generate a database migration by comparing your current database to your mapping information
+    cmd: php bin/console doctrine:migrations:diff
+  migrate:
+    service: appserver
+    description: Execute a database migration to a specified version or the latest available version
+    cmd: php bin/console doctrine:migrations:migrate
+  cache:
+    service: appserver
+    description: Clears the Symfony cache
+    cmd: php bin/console cache:clear
   yarn:
     service: node
     description: Run the Yarn package manager
     cmd: yarn
-
   blackfire:
     service: appserver
     description: Profile a Symfony console command using blackfire
     cmd: blackfire run php bin/console
-
   encore:
     service: node
     description: Runs Webpack Encore
