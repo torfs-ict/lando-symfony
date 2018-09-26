@@ -29,7 +29,7 @@ $app
             ]);
         };
 
-        $dist = __DIR__ . '/.lando.yml.dist';
+        $dist = __DIR__ . '/lando.yml.tpl';
         $user = __DIR__ . '/../lando.yml';
         $build = __DIR__ . '/../.lando.yml';
         $yaml = Yaml::parseFile($user);
