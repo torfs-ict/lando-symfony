@@ -78,12 +78,7 @@ services:
     type: compose
     services:
       image: zrrrzzt/docker-unoconv-webservice
-      volumes:
-        - 'data_unoconv:/unoconvservice/uploads'
       command: 'bash /app/.lando/install/unoconv.sh'
-    overrides:
-      volumes:
-        data_unoconv: {  }
 
 tooling:
   sf:
