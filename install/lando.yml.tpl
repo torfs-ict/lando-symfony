@@ -16,10 +16,7 @@ services:
     via: nginx
     ssl: true
     install_dependencies_as_root:
-      - 'bash $LANDO_MOUNT/.lando/install/blackfire.sh'
-      - 'pecl install igbinary'
-      - 'docker-php-ext-enable igbinary'
-      - 'docker-php-ext-install sockets'
+      - 'bash $LANDO_MOUNT/.lando/install/php.sh'
       - 'echo "xdebug.remote_host=$LANDO_HOST_IP" >> /usr/local/etc/php/conf.d/zzzz-blackfire.ini'
     install_dependencies_as_me:
       - "composer install --working-dir=$LANDO_MOUNT"
