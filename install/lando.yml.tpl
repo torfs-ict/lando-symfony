@@ -79,6 +79,11 @@ services:
     services:
       image: zrrrzzt/docker-unoconv-webservice
       command: 'bash /app/.lando/install/unoconv.sh'
+  pdftk:
+    type: compose
+    services:
+      image: torfsict/docker-pdftk-webservice
+      command: php /app/bin/console server:run 0.0.0.0:80
 
 tooling:
   sf:
