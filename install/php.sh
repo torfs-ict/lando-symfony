@@ -3,6 +3,10 @@ echo "Installing igbinary extension..."
 pecl install igbinary
 docker-php-ext-enable igbinary
 
+echo "Installing gmp extension..."
+apt-get -y install libgmp-dev
+docker-php-ext-install gmp
+
 echo "Installing sockets extension..."
 docker-php-ext-install sockets
 
