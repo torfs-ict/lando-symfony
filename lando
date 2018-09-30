@@ -43,7 +43,6 @@ $app
         $io->title('Lando environment builder');
         // Generate default user file if one doesn't exist
         if (!file_exists($user)) {
-            //$block('No <bg=red;options=bold>lando.yml</> found.', 'white', 'red');
             $ret = $io->confirm('No <fg=white;options=bold>lando.yml</> found, would you like to create one?');
             if ($ret) {
                 $project = null;
@@ -85,6 +84,17 @@ $app
             $block('No <bg=red;options=bold>project name</> set in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
             exit(12);
         } else {
+
+            // Check if any of our services were marked for removal in the user file
+            if (array_key_exists('services', $user) && is_array($user['services'])) {
+                foreach($user['services'] as $service => $value) {
+                    if (!is_null($value)) continue;
+                    if (array_key_exists($service, $dist['services'])) unset($dist['services'][$service]);
+                    if (($index = array_search($service, $dist['proxy'])) !== false) unset($dist['proxy'][$index]);
+                    if (array_key_exists($service, $user['proxy'])) unset($user['proxy'][$service]);
+                    unset($user['services'][$service]);
+                }
+            }
 
             // Validation: at least one proxy URL should be set for each service
             if (!array_key_exists('proxy', $user) || !is_array($user['proxy'])) {
