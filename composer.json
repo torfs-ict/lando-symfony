@@ -1,0 +1,19 @@
+{
+    "name": "torfs-ict/lando-symfony",
+    "description": "Lando development environment generator for Symfony",
+    "type": "project",
+    "require": {
+        "php": "^7"
+    },
+    "require-dev": {
+        "symfony/console": "^4.1",
+        "symfony/yaml": "^4.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kristof Torfs",
+            "email": "kristof@torfs.org"
+        }
+    ]
+}

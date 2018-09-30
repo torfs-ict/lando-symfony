@@ -1,19 +1,27 @@
+#!/usr/bin/env php
 <?php
 
-require __DIR__.'/../vendor/autoload.php';
+$dev = false;
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__ . '/vendor/autoload.php';
+    $dev = true;
+} else {
+    echo "Unable to find Composer autoloader\n";
+    exit(1);
+}
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
 
-$app = new Application('echo', '1.0.0');
+$app = new Application('lando', '1.0.0');
 $app
     ->register('build')
-    ->setCode(function(InputInterface $input, OutputInterface $output) use ($app) {
+    ->setCode(function(InputInterface $input, OutputInterface $output) {
         $io = new SymfonyStyle($input, $output);
 
         $block = function(string $message, string $foreground = 'white', string $background = 'black', bool $pad = true) use ($io) {
@@ -28,7 +36,7 @@ $app
             $io->writeln($messages);
         };
 
-        $dist = __DIR__ . '/lando.yml.tpl';
+        $dist = __DIR__ . '/install/lando.yml.tpl';
         $user = __DIR__ . '/../lando.yml';
         $build = __DIR__ . '/../.lando.yml';
 
@@ -66,7 +74,7 @@ $app
                     'black', 'green'
                 );
             } else {
-                exit(1);
+                exit(11);
             }
         }
 
@@ -75,18 +83,18 @@ $app
         if (!array_key_exists('name', $user) || empty(trim($user['name']))) {
             // Validation: check if the project name is set
             $block('No <bg=red;options=bold>project name</> set in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
-            exit(2);
+            exit(12);
         } else {
 
             // Validation: at least one proxy URL should be set for each service
             if (!array_key_exists('proxy', $user) || !is_array($user['proxy'])) {
                 $block('No <bg=red;options=bold>proxy domains</> set in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
-                exit(3);
+                exit(13);
             }
             foreach($dist['proxy'] as $service) {
                 if (!array_key_exists($service, $user['proxy']) || !is_array($user['proxy'][$service])) {
                     $block('No <bg=red;options=bold>proxy domain(s)</> set for service <bg=red;options=bold>' . $service . '</> in <bg=red;options=bold>lando.yml</>.', 'white', 'red');
-                    exit(4);
+                    exit(14);
                 }
             }
             unset($dist['proxy']);
@@ -99,5 +107,17 @@ $app
         }
     })
     ->getApplication()
-    ->setDefaultCommand('build', true)
+    ->register('test')
+    ->setCode(function(InputInterface $input, OutputInterface $output) {
+        // Copy everything into test directory
+        // Create test/lando.yaml
+        // Create test/.env
+        // Build and start the environment
+        // Check if all PHP extensions have been installed
+        // Check if all services are up
+        // Destroy the environment
+        // Remove the test directory
+    })
+    ->getApplication()
+    ->setDefaultCommand($dev ? 'test' : 'build', true)
     ->run();
