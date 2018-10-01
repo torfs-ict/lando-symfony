@@ -16,13 +16,13 @@ services:
     via: nginx
     ssl: true
     install_dependencies_as_root:
-      - 'bash $LANDO_MOUNT/.lando/install/php.sh'
+      - 'bash $LANDO_MOUNT/vendor/torfs-ict/lando-symfony/src/Resources/php.sh'
       - 'echo "xdebug.remote_host=$LANDO_HOST_IP" >> /usr/local/etc/php/conf.d/zzzz-blackfire.ini'
     install_dependencies_as_me:
       - "composer install --working-dir=$LANDO_MOUNT"
     config:
-      server: .lando/install/nginx.conf
-      conf: .lando/install/php.ini
+      server: vendor/torfs-ict/lando-symfony/src/Resources/nginx.conf
+      conf: vendor/torfs-ict/lando-symfony/src/Resources/php.ini
     xdebug: true
     composer:
       hirak/prestissimo: "^0.3"
@@ -75,7 +75,7 @@ services:
     type: compose
     services:
       image: zrrrzzt/docker-unoconv-webservice
-      command: 'bash /app/.lando/install/unoconv.sh'
+      command: 'bash /app/vendor/torfs-ict/lando-symfony/src/Resources/unoconv.sh'
   pdftk:
     type: compose
     services:

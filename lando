@@ -5,6 +5,7 @@ use Lando\BuildCommand;
 use Lando\CommandSettings;
 use Lando\TestCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
 
 foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
     if (file_exists($file)) {
@@ -28,6 +29,7 @@ require LANDO_COMPOSER_INSTALL;
 $settings = new CommandSettings();
 $app = new Application('lando', '1.0.0');
 if ($settings->isDevelopmentEnvironment()) {
+    (new Dotenv())->load(__DIR__ . '/.env');
     $app->addCommands([new TestCommand($settings)]);
     $app->setDefaultCommand('test', true);
 } else {

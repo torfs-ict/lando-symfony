@@ -4,7 +4,8 @@ pecl install igbinary
 docker-php-ext-enable igbinary
 
 echo "Installing gmp extension..."
-apt-get -y install libgmp-dev
+apt-get update
+apt-get -yqq install libgmp-dev
 docker-php-ext-install gmp
 
 echo "Installing sockets extension..."
@@ -18,3 +19,7 @@ apt-get -yqq install blackfire-agent blackfire-php
 echo -e "yes\n$BLACKFIRE_SERVER_ID\n$BLACKFIRE_SERVER_TOKEN" | blackfire-agent --register
 /etc/init.d/blackfire-agent restart
 echo -e "$BLACKFIRE_CLIENT_ID\n$BLACKFIRE_CLIENT_TOKEN" | blackfire config
+
+echo "Installing netcat..."
+apt-get update
+apt-get -yqq install netcat

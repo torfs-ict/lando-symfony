@@ -22,5 +22,9 @@
     },
     "bin": [
         "lando"
-    ]
+    ],
+    "require-dev": {
+        "matomo/ini": "^2.0",
+        "symfony/dotenv": "^4.1"
+    }
 }
