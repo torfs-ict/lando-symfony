@@ -3,11 +3,10 @@
     "description": "Lando development environment generator for Symfony",
     "type": "project",
     "require": {
-        "php": "^7"
-    },
-    "require-dev": {
+        "php": "^7",
         "symfony/console": "^4.1",
-        "symfony/yaml": "^4.1"
+        "symfony/yaml": "^4.1",
+        "symfony/process": "^4.1"
     },
     "license": "MIT",
     "authors": [
@@ -15,5 +14,13 @@
             "name": "Kristof Torfs",
             "email": "kristof@torfs.org"
         }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lando\\": "src/"
+        }
+    },
+    "bin": [
+        "lando"
     ]
 }
