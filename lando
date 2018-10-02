@@ -27,7 +27,7 @@ if (!defined('LANDO_COMPOSER_INSTALL')) {
 require LANDO_COMPOSER_INSTALL;
 
 $settings = new CommandSettings();
-$app = new Application('lando', '0.0.3');
+$app = new Application('lando', '1.0.0');
 if ($settings->isDevelopmentEnvironment()) {
     (new Dotenv())->load(__DIR__ . '/.env');
     $app->addCommands([new TestCommand($settings)]);
