@@ -99,6 +99,10 @@ tooling:
     service: appserver
     description: Clears the Symfony cache
     cmd: php bin/console cache:clear
+  warmup:
+    service: appserver
+    description: Warms up an empty cache
+    cmd: php bin/console cache:clear
   yarn:
     service: node
     description: Run the Yarn package manager
