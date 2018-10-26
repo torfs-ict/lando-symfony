@@ -31,15 +31,12 @@ services:
       services:
         image: blackfire/blackfire
         command: blackfire-agent
-  database:
-    portforward: 3306
   phpmyadmin:
     type: phpmyadmin
     hosts:
       - database
   elk:
     type: compose
-    portforward: 5601
     services:
       image: sebp/elk
       command: /usr/local/bin/start.sh

@@ -6,10 +6,16 @@ services:
     command: ["--headless", "--disable-gpu", "--remote-debugging-address=0.0.0.0", "--remote-debugging-port=9222", "--no-sandbox"]
     restart: always
     ports:
-    - '127.0.0.1:9222:9222'
+      - '127.0.0.1:9222:9222'
 
   unoconv:
     image: zrrrzzt/docker-unoconv-webservice
     restart: always
     ports:
-    - '127.0.0.1:3000:3000'
+      - '127.0.0.1:3000:3000'
+
+  pdftk:
+    image: torfsict/docker-pdftk-webservice
+    restart: always
+    ports:
+      - '127.0.0.1:2000:80'
